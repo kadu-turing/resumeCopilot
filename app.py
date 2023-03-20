@@ -5,6 +5,8 @@ from streamlit_chat import message
 
 from profile_bot import Chatbot
 
+# Initialize the Chatbot
+chat_bot = Chatbot()
 
 # Auth
 st.sidebar.image("Img/robot_reading_resume.png")
@@ -17,35 +19,25 @@ if api_key:
 # App 
 st.header("`Resume Copilot`")
 st.info("`Hey there! I'm an assistant for recruiter.`")
+
+uploaded_jd = st.file_uploader("`(Optional) Upload job description PDF file:` ", type = ['pdf'] , accept_multiple_files=False)
 uploaded_resume = st.file_uploader("`Upload resume PDF file:` ", type = ['pdf'] , accept_multiple_files=False)
 
-# Initialize the Chatbot
-chat_bot = Chatbot()
-
-# keep chat history
-if "generated" not in st.session_state:
-    st.session_state["generated"] = []
-if "past" not in st.session_state:
-    st.session_state["past"] = []
-
-if uploaded_resume and os.environ["OPENAI_API_KEY"]:
+if uploaded_resume and os.environ.get("OPENAI_API_KEY"):
     # Summarize the resume and print the result
-    resume_summary = chat_bot.summarize_resume(uploaded_resume)
+    if uploaded_jd:
+        resume_summary = chat_bot.summarize_resume(uploaded_resume, uploaded_jd)
+        question_prompt = "Ask several interview questions based on the given resume and job description"
+    else: 
+        resume_summary = chat_bot.summarize_resume(uploaded_resume)
+        question_prompt = "Ask several interview questions based on the given resume"
     st.info(resume_summary)
 
-    # Print instructions for chat mode and available commands
-    st.info("Entering interview mode.")
-    
-     # Prompt the user for a question
-    query = st.text_input("`Ask interview questions about the resume:` ","Ask 10 interview questions about skills and experience based on the given resume.")
-    answer = chat_bot.answer(query)
-        
-    st.session_state["past"].append(query)
-    st.session_state["generated"].append(answer)
 
-    if st.session_state["past"]:
-        for i in range(len(st.session_state["past"]) - 1, -1, -1):
-            message(st.session_state["generated"][i], key=str(i) + "_answer")
-            message(st.session_state["past"][i], is_user=True, key=str(i) + "_user")
+    # Prompt the user for a question
+    query = st.text_input("`Create some interview questions:` ", question_prompt)
+    answer = chat_bot.answer(query)
+    st.info(answer)
+
 else:
     st.info("`Please upload a resume PDF file.`")
