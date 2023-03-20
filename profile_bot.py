@@ -1,4 +1,5 @@
 from langchain import LLMChain
+from langchain.vectorstores import FAISS
 from langchain.document_loaders import UnstructuredPDFLoader
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import SystemMessage
@@ -7,7 +8,7 @@ from langchain.prompts.chat import ChatPromptTemplate, HumanMessagePromptTemplat
 recruiter_prompt = "You are a chatbot helping a recruiter to evaluate candidate's resume and question the candidates."
 
 class Chatbot:
-    def __init__(self, model_name='gpt-3.5-turbo', temperature=0, verbose=False):
+    def __init__(self, model_name='gpt-4', temperature=0, verbose=False):
         llm = ChatOpenAI(model_name=model_name, temperature=temperature, verbose=verbose)
         # initial message or instruction given to the model to set the context, role, or goal for the conversation
         system_message = SystemMessage(content=recruiter_prompt)
