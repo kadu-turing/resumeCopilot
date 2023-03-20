@@ -37,7 +37,7 @@ if uploaded_resume and os.environ["OPENAI_API_KEY"]:
     st.info("Entering interview mode.")
     
      # Prompt the user for a question
-    query = st.text_input("`Ask interview questions about the resume:` ","Ask 3 interview questions based on the given resume.")
+    query = st.text_input("`Ask interview questions about the resume:` ","Ask 10 interview questions about skills and experience based on the given resume.")
     answer = chat_bot.answer(query)
         
     st.session_state["past"].append(query)
