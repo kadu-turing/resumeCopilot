@@ -1,0 +1,7 @@
+langchain
+openai
+streamlit
+streamlit_chat
+unstructured[local-inference]
+beautifulsoup4
+pdfminer.six
