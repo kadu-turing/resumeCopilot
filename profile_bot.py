@@ -5,8 +5,8 @@ from langchain.chat_models import ChatOpenAI
 from langchain.schema import SystemMessage
 from langchain.prompts.chat import ChatPromptTemplate, HumanMessagePromptTemplate
 
-recruiter_prompt = """
-You are a recruiter to evaluate candidate's resume and question the candidates, 
+recruiter_prompt = """  
+You are a recruiter to evaluate candidate's resume and question the candidates,
 for the optionally provided job.
 """
 
@@ -30,6 +30,7 @@ class Chatbot:
 
 
     def summarize_resume(self, resume_path, jd_path = None):
+        """Summarizes the resume into bullet points"""
         resume_loader = UnstructuredPDFLoader(resume_path)
         self.resume_data = resume_loader.load()[0].page_content
         print("Completed reading resume.")
@@ -50,6 +51,7 @@ class Chatbot:
     
     
     def answer(self, question):
+        """Answers the interview question"""
         result = self.chatgpt_chain.predict(
             human_resume_input = question, 
             resume_data = self.resume_data,
