@@ -2,6 +2,7 @@ import os
 
 import streamlit as st
 from streamlit_chat import message
+import test_app
 
 from profile_bot import Chatbot
 
@@ -16,7 +17,7 @@ st.sidebar.write("`By:` [Kai](mailto:{})".format("kai.du@turing.com"))
 if api_key:
     os.environ["OPENAI_API_KEY"] = api_key
 
-# App 
+# App  
 st.header("`Resume Copilot`")
 st.info("`Hey there! I'm an assistant for recruiter.`")
 
